@@ -1,41 +1,35 @@
-[tool.poetry]
+[project]
 name = "dataall_sdk"
 version = "0.3.0a1"
 description = "AWS data.all SDK"
-authors = ["Amazon Web Services"]
-license = "Apache License 2.0"
-
+authors = [{name = "Amazon Web Services"}]
+license = {text = "Apache License 2.0"}
 readme = "README.md"
-
-include = ["README.md"]
-
-exclude = ["*.so", "*.pyc", "*~", "#*", ".git*", ".coverage*", "DS_Store", "__pycache__"]
-
-
 keywords = ["dataall", "aws"]
-
 classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
+requires-python = ">=3.9, <4.0"
+dependencies = [
+    "boto3>=1.28.22,<2.0.0",
+    "botocore>=1.31.22,<2.0.0",
+    "typing-extensions>=4.4.0,<5.0.0",
+    "packaging>=21.1,<24.0",
+    "build>=0.10.0,<1.0.0",
+    "setuptools; python_version >= '3.12'",
+    "dataall-core @ git+https://github.com/data-dot-all/dataall-core.git",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9, <4.0"
+[tool.poetry]
+include = ["README.md"]
+exclude = ["*.so", "*.pyc", "*~", "#*", ".git*", ".coverage*", "DS_Store", "__pycache__"]
 
-# Required
-boto3 = "^1.28.22"
-botocore = "^1.31.22"
-typing-extensions = "^4.4.0"
-packaging = ">=21.1,<24.0"
-build = "^0.10.0"
 
-# needed because Py 3.12 removed distutils, which some libraries still need
-setuptools = {version = "*", markers = "python_version >= \"3.12\""}
-dataall-core = {git = "https://github.com/data-dot-all/dataall-core.git"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Build
 setuptools = "*"
 wheel = "^0.42.0"
