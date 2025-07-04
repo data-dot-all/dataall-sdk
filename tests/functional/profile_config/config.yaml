@@ -1,0 +1,14 @@
+CognitoDefault:
+  auth_type: CognitoAuth
+  client_id: XXXXXXXXXXX
+  api_endpoint_url: https://XXXXXXXX.execute-api.us-east-1.amazonaws.com/prod
+  redirect_uri: https://DATAALL.cloudfront.net
+  idp_domain_url: https://USERPOOL.auth.REGION.amazoncognito.com
+CustomDefault:
+  auth_type: CustomAuth
+  client_id: XXXXXXXXXXX
+  client_secret: XXXXXXXXXXX
+  api_endpoint_url: https://XXXXXXXX.execute-api.us-east-1.amazonaws.com/prod
+  session_token_endpoint: https://XXXXXXXXX.com/api/v1/authn
+  idp_domain_url: https://XXXXXXXXX.com
+  redirect_uri: https://DATAALL.cloudfront.net
