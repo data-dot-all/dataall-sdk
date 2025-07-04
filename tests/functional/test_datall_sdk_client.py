@@ -12,7 +12,9 @@ PROFILE_CONFIG = os.path.join(
 )
 
 
-def test_default_client_init():
+@patch("os.path.isfile")
+def test_default_client_init_missing_config(isfile):
+    isfile.return_value = None
     client = dataall_sdk.client()
     assert client
     assert isinstance(client, BaseClient)
