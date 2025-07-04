@@ -19,7 +19,7 @@ import sphinx_bootstrap_theme
 
 # Insert dataall SDK's path into the system.
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
-import dataall_sdk  # noqa: E402
+import dataall_sdk
 
 # Append local Sphinx extensions
 sys.path.append(os.path.abspath("./_ext"))
