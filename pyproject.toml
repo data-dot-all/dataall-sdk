@@ -20,7 +20,7 @@ dependencies = [
     "packaging>=21.1,<24.0",
     "build>=0.10.0,<1.0.0",
     "setuptools; python_version >= '3.12'",
-    "dataall-core @ git+https://github.com/data-dot-all/dataall-core.git",
+    "dataall-core>=0.3.0a2",
 ]
 
 [tool.poetry]

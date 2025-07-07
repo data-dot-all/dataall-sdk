@@ -1212,13 +1212,15 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "dataall-core"
-version = "0.3.0a1"
+version = "0.3.0a2"
 description = "AWS data.all core"
 optional = false
-python-versions = ">=3.9, <4.0"
+python-versions = "<4.0,>=3.9"
 groups = ["main"]
-files = []
-develop = false
+files = [
+    {file = "dataall_core-0.3.0a2-py3-none-any.whl", hash = "sha256:5249abc27693a37b04140806af7b50aba70401918a5692523d066b8e848013e8"},
+    {file = "dataall_core-0.3.0a2.tar.gz", hash = "sha256:2a9dd3bc1ebd6953ca2a11798d985f9f817b0b32f49bdcec2d6842dcceb148d6"},
+]
 
 [package.dependencies]
 ariadne = ">=0.22,<1.0.0"
@@ -1240,12 +1242,6 @@ requests-oauthlib = ">=2.0.0,<3.0.0"
 retrying = ">=1.3.4,<2.0.0"
 setuptools = {version = "*", markers = "python_version >= \"3.12\""}
 typing-extensions = ">=4.4.0,<5.0.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/data-dot-all/dataall-core.git"
-reference = "HEAD"
-resolved_reference = "16ca5bd3e8e7b712ed9ec94e88304c16ad9c9d3f"
 
 [[package]]
 name = "decorator"
@@ -4271,4 +4267,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9, <4.0"
-content-hash = "b7b8e2c645021dfe567a606dcfc578455302c5c47143b319d7adfab59e11468d"
+content-hash = "1f1c7b9df5ce787ff58d56809220bf87be528ce4bebd9101855bf6a1c332058d"
