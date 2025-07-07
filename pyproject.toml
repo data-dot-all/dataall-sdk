@@ -1,5 +1,5 @@
 [project]
-name = "dataall_sdk"
+name = "dataall-sdk"
 version = "0.3.0a1"
 description = "AWS data.all SDK"
 authors = [{name = "Amazon Web Services"}]
