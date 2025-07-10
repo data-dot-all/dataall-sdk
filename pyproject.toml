@@ -1,6 +1,6 @@
 [project]
 name = "dataall-sdk"
-version = "0.4.1"
+version = "0.4.2"
 description = "AWS data.all SDK"
 authors = [{ name = "Amazon Web Services" }]
 license = { text = "Apache License 2.0" }
@@ -20,7 +20,7 @@ dependencies = [
     "packaging>=21.1,<24.0",
     "build>=0.10.0,<1.0.0",
     "setuptools; python_version >= '3.12'",
-    "dataall-core==0.4.1",
+    "dataall-core>=0.4.2",
 ]
 
 [tool.poetry]
