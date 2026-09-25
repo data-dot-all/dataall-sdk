@@ -26,6 +26,9 @@ import dataall_sdk
 # Profile w/ UserA (assuming UserA profile configured in ~/.dataall/config.yaml)
 da_client = dataall.client(profile="UserA") 
 
+# Or discover the settings from the data.all front page (profile saved under its host name)
+da_client = dataall.client(dataall_url="https://DATAALL_DOMAIN_URL")
+
 list_org_response = da_client.list_organizations()
 print(list_org_response)
 ```
