@@ -1,8 +1,10 @@
 import os
 from unittest.mock import patch
 
+import pytest
 from dataall_core.base_client import BaseClient
 from dataall_core.dataall_client import DataallClient
+from dataall_core.exceptions import MissingParametersException
 from dataall_core.profile import get_profile
 
 import dataall_sdk
@@ -75,3 +77,48 @@ def test_default_client_loaded_methods():
                 {},
             )
             assert getattr(client, method).__doc__ == op_dict[method]["docstring"]
+
+
+OIDC_DISCOVERY = {
+    "frontend_url": "https://dataall.example.com",
+    "auth_type": "OidcBrowserAuth",
+    "idp_domain_url": "https://idp/oauth2/aus1",
+    "client_id": "0oaCLIENT",
+    "api_endpoint_url": "https://api/prod",
+}
+
+
+def test_client_from_frontend_url(tmp_path):
+    config_path = str(tmp_path / "config.yaml")
+    with patch(
+        "dataall_core.discovery.discover_from_frontend",
+        side_effect=lambda url: dict(OIDC_DISCOVERY),
+    ) as discover:
+        client = dataall_sdk.client(
+            dataall_url="https://dataall.example.com/console", config_path=config_path
+        )
+        assert isinstance(client, BaseClient)
+        assert type(client.authorizer).__name__ == "OidcBrowserAuth"
+        assert client.authorizer.profile.profile_name == "dataall.example.com"
+        assert client.authorizer.profile.client_id == "0oaCLIENT"
+        assert client.authorizer.profile.frontend_url == "https://dataall.example.com"
+
+        again = dataall_sdk.client(
+            dataall_url="https://dataall.example.com", config_path=config_path
+        )
+        assert again.authorizer.profile == get_profile(
+            "dataall.example.com", config_path=config_path
+        )
+        discover.assert_called_once()
+
+
+def test_client_from_frontend_url_missing_values(tmp_path):
+    with patch(
+        "dataall_core.discovery.discover_from_frontend",
+        return_value={"frontend_url": "https://dataall.example.com"},
+    ):
+        with pytest.raises(MissingParametersException, match="auth_type"):
+            dataall_sdk.client(
+                dataall_url="https://dataall.example.com",
+                config_path=str(tmp_path / "config.yaml"),
+            )

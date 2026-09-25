@@ -5,21 +5,24 @@
 
 Dataall's SDK requires user profile information to be stored either in a local file or in AWS Secrets Manager. The user information required includes:
 
-- auth_type: Either `CognitoAuth` or `CustomAuth`
+- auth_type: `CognitoAuth`, `CustomAuth` or `OidcBrowserAuth` (browser login, no password)
 - client_id: The App Client ID
 - api_endpoint_url: The URL data.all API Gateway Endpoint 
-- redirect_uri: The data.all domain URL
-- idp_domain_url: The Identity Providers URL
+- redirect_uri: The data.all domain URL (for `OidcBrowserAuth`: the loopback URI registered for the client, default `http://localhost:8765/callback`)
+- idp_domain_url: The Identity Providers URL (for `OidcBrowserAuth`: the OIDC issuer URL)
 - client_secret (optional): The client secret used for the data.all App Client
 - auth_server (optional, used for CustomAuth): The Custom Authorization Server used if applicable
 - session_token_endpoint (optional, required for CustomAuth): The Identity Provider API endpoint to retrieve session tokens
+- scopes (optional, OidcBrowserAuth): OIDC scopes, default `openid offline_access`
+- fallback_redirect_uri (optional, OidcBrowserAuth): second loopback URI tried when the first port is busy
+- frontend_url (optional): the data.all UI URL, sent as `Origin` and `Referer` headers; required where the API only accepts calls carrying the UI origin
 - profile:  The Profile Name
 
 Data.all's SDK uses the profile information to fetch and save tokens from the data.all application. 
 
 By default the user information is provided at `~/.dataall/config.yaml` and the token information is saved at `~/.dataall/credentials.yaml`
 
-If a valid token or refresh token exists for the given user, that will be used to fetch a new token and authenticate the profile. Otherwise, the user will be prompted for username and password when running an API request and the fetched tokens will be saved.
+If a valid token or refresh token exists for the given user, that will be used to fetch a new token and authenticate the profile. Otherwise, the user will be prompted for username and password when running an API request and the fetched tokens will be saved. With `OidcBrowserAuth` the SDK opens the identity provider's login page in the browser instead (or prints a device code on hosts without a browser).
 
 
 ### Configuring your first data.all User profile
@@ -48,6 +51,20 @@ TestCustomProfile:
   idp_domain_url: https://IDP_DOMAIN_URL
   session_token_endpoint: testtokenendpoint
 ```
+
+
+### Connecting with just the front page URL
+
+You do not have to write a profile by hand. Point the client at the data.all front page and the SDK reads the authentication type, identity provider, client id and API endpoint from the deployed application:
+
+```py3
+import dataall_sdk as dataall
+
+client = dataall.client(dataall_url="https://DATAALL_DOMAIN_URL")
+client.list_organizations()
+```
+
+The discovered profile is saved in `~/.dataall/config.yaml` under the page's host name (pass `profile="..."` to choose the name), so the next call reuses it without contacting the front page, and the tokens are kept in `credentials.yaml` as for any other profile. If a profile with that name already exists it is used as is. For OIDC deployments the first API call opens the browser for the login; the identity provider app must allow the loopback redirect URIs (`http://localhost:8765/callback` and `http://localhost:8766/callback`). Values that cannot be read from the page raise `MissingParametersException` naming them.
 
 ### Specifying your user profile
 
